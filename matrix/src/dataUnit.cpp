@@ -1,158 +1,165 @@
 #include<vector>
 #include<iostream>
 
-/**************
- * General: 
- *      val()
- *      calBy(vector)
- *      setOrigin()
- *      getOrigin()
- *
- * ************
- * Beta:
- *
- * ************
- */
-class adtData
-{
+class adtData{
 public:
     adtData()=default;
-    adtData(double init){this->value = init;}
-    virtual void calBy(std::vector<double>){};
+    virtual ~adtData(){}
     double val(){return this->value;}
     void setVal(double val){this->value = val;}
+    virtual void calBy(const std::vector<double> &paras){if(!paras.empty())this->value = paras[0];}
 private:
-    double value=0;
+    double value = 0;
 };
 
-
-class Beta : public adtData
-{
+template< typename T >
+class dataPoint:public adtData{
 public:
-    Beta()=default;
-    Beta(double init):adtData(init){}
-    virtual void calBy(std::vector<double>) override;
-    void setOrigin(double val){origin = val;}
-    double getOrigin(){return origin;}
+    dataPoint()=default;
+    dataPoint(double num){setVal(num);}
+    static void setOrigin(double val){origin = val;}
+    static double getOrigin(){return origin;}
+    virtual void calBy(const std::vector<double> &paras);
+    dataPoint& operator=(double val){
+        setVal(val);
+        return *this;
+    }
+    operator double(){return val();}
+    void info(){typeinfo.info();}
 private:
+    T typeinfo;
     static double origin;
 };
 
-double Beta::origin = 0;
+template<typename T>
+double dataPoint<T>::origin = 0;
 
-void Beta::calBy(std::vector<double> para)
-{
-    double ans = getOrigin() * para[0] / para[1];
-    setVal(ans);
-    return;
-}
 
-class Qn : public adtData
-{
+class Qn{
 public:
     Qn()=default;
-    Qn(double init):adtData(init){}
-    virtual void calBy(std::vector<double>) override;
-    void setOrigin(double val){origin = val;}
-    double getOrigin(){return origin;}
-private:
-    static double origin;
+    void info(){
+        std::cout<<"Qn"<<std::endl;
+    }
 };
 
-double Qn::origin = 0;
-
-void Qn::calBy(std::vector<double> para)
-{
-    double ans = getOrigin() * para[0];
-    setVal(ans);
-    return;
-}
-
-class En : public adtData
-{
+class En{
 public:
     En()=default;
-    En(double init):adtData(init){}
-    virtual void calBy(std::vector<double>) override;
-    void setOrigin(double val){origin = val;}
-    double getOrigin(){return origin;}
-private:
-    static double origin;
+    void info(){
+        std::cout<<"En"<<std::endl;
+    }
 };
 
-double En::origin = 0;
-
-void En::calBy(std::vector<double> para)
-{
-    double ans = getOrigin() * para[0];
-    setVal(ans);
-    return;
-}
-
-
-class Yn : public adtData
-{
+class Bn{
 public:
-    Yn()=default;
-    Yn(double init):adtData(init){}
-    void calBy(std::vector<double> val){if(!val.empty())setVal(val[0]);}
-    void setOrigin(double val){origin = val;}
-    double getOrigin(){return origin;}
-private:
-    static double origin;
+    Bn()=default;
+    void info(){
+        std::cout<<"Bn"<<std::endl;
+    }
 };
 
-double Yn::origin = 1;
-
-
-class Cn : public adtData
-{
-public:
-    Cn()=default;
-    Cn(double init):adtData(init){}
-    virtual void calBy(std::vector<double>) override;
-};
-
-void Cn::calBy(std::vector<double> para)
-{
-    double bottom = 1 + para[0]/para[1];
-    double ans = 100.0/bottom;
-    setVal(ans);
-    return;
-}
-
-
-class Wn : public adtData
-{
+class Wn{
 public:
     Wn()=default;
-    Wn(double init):adtData(init){}
-    virtual void calBy(std::vector<double>) override;
+    void info(){
+        std::cout<<"Wn"<<std::endl;
+    }
 };
 
-void Wn::calBy(std::vector<double> para)
-{
+
+class Yn{
+public:
+    Yn()=default;
+    void info(){
+        std::cout<<"Yn"<<std::endl;
+    }
+};
+
+template<>
+void dataPoint<Qn>::calBy(const std::vector<double> &para){
+    double ans = getOrigin() * para[0];
+    setVal(ans);
+}
+
+template<>
+void dataPoint<En>::calBy(const std::vector<double> &para){
+    double ans = para[0] * para[1] / getOrigin();
+    setVal(ans);
+}
+
+template<>
+void dataPoint<Bn>::calBy(const std::vector<double> &para){
+    double ans = getOrigin() * para[0] / para[1];
+    setVal(ans);
+}
+
+template<>
+void dataPoint<Wn>::calBy(const std::vector<double> &para){
     double ans = para[0] * para[1];
     setVal(ans);
-    return;
 }
 
-
-class dataPoint
-{
+class dataFrame{
 public:
-    Yn y;
-    En e;
-    Beta b;
-}
+    dataFrame()=default;
+    void setG(double val){Gamma = val;}
+    void setQ(double val){Quantity = val;}
+    void setC(double val){Condensity = val;}
+    void setW(double val){Water = val;}
+    void setE(double val){Epsilon = val;}
+    void setB(double val){Beta = val;}
+
+    void setGBy(const std::vector<double> &para){Gamma.calBy(para);}
+    void setQBy(const std::vector<double> &para){Quantity.calBy(para);}
+    void setCBy(const std::vector<double> &para){Condensity.calBy(para);}
+    void setWBy(const std::vector<double> &para){Water.calBy(para);}
+    void setEBy(const std::vector<double> &para){Epsilon.calBy(para);}
+    void setBBy(const std::vector<double> &para){Beta.calBy(para);}
+
+    double getG(double val){return Gamma;}
+    double getQ(double val){return Quantity;}
+    double getC(double val){return Condensity;}
+    double getW(double val){return Water;}
+    double getE(double val){return Epsilon;}
+    double getB(double val){return Beta;}
+private:
+    dataPoint<Yn> Gamma;
+    dataPoint<Qn> Quantity;
+    dataPoint<Cn> Condensity;
+    dataPoint<Wn> Water;
+    std::vector<dataPoint<En>> Epsilon;
+    std::vector<dataPoint<Bn>> Beta;
+};
+
+class flow_sheet{
+public:
+    using std::vector<std::pair<double>> = unit;
+    flow_sheet(int roughSize,int cleanSize,int sweepSize){
+        
+    }
+    void setVal(const unit &rough, const unit &clean, const unit &sweep);
+    void setGrade(double val);
+    void setEpsilon(double val=1);
+    void setQuantity(double val);
+    void setGamma(double val=1);
+    void addOre(const unit &rough, const unit &clean, const unit &sweep);
+    void addGrade(double val);
+private:
+
+    typedef struct{
+    public:
+        dataframe left;
+        dataframe right;
+    }flow_unit;
+
+    std::vector<flow_unit> Rough;
+    std::vector<flow_unit> Clean;
+    std::vector<flow_unit> Sweep;
+    std::vector<flow_unit> ConvergeRough;
+    std::vector<flow_unit> ConvergeClean;
+    std::vector<flow_unit> ConvergeSweep;
+};
 
 
-int main(){
-    Qn Q1(1);
-    Q1.setOrigin(1);
-    En E1(1);
-    E1.setOrigin(2);
-    std::cout<<E1.getOrigin()<<std::endl;
-    std::cout<<Q1.getOrigin()<<std::endl;
-    return 0;
-}
+
