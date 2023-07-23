@@ -23,6 +23,14 @@ namespace claris{
         return temp;
     }
 
+    matrix& matrix::operator*=(double coef){
+        for(int i=0;i<size_out;++i){
+            for(int j=0;j<size_in;++j)
+                this->data[i][j]*=coef;
+        }
+        return *this;
+    }
+
     matrix matrix::operator-(matrix& mat) const{
         return (*this + (mat.operator-()));
     }
@@ -51,19 +59,6 @@ namespace claris{
         }
         return temp;
     }
-
-    matrix operator*(double coef, const matrix& mat){
-        return mat * coef;
-    }
-
-    matrix& matrix::operator*=(double coef){
-        for(int i=0;i<size_out;++i){
-            for(int j=0;j<size_in;++j)
-                this->data[i][j]*=coef;
-        }
-        return *this;
-    }
-
 
 //----------------operation-between-matrix-------------<<<<<<
 
@@ -272,7 +267,7 @@ namespace claris{
     }
 
 
-    std::ostream& operator<<(std::ostream& os,const matrix& ma)
+    std::ostream& operator<<(std::ostream& os,const claris::matrix& ma)
     {
         int index = 0;
         int gap = 5;
@@ -305,6 +300,10 @@ namespace claris{
             std::cout<<std::endl;
         }
         return os;
+    }
+
+    claris::matrix operator*(double coef, const claris::matrix& mat){
+        return mat * coef;
     }
 
 }

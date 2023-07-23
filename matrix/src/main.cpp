@@ -8,7 +8,7 @@ int main(int argc,char* argv[]){
          {11,2,9,3},
     };
     claris::matrix test(data);
-    cout<<test<<std::endl;
+    cout<<9*test<<std::endl;
 
     cout<<"echelon:"<<endl;
     cout<<test.getEchelon()<<endl;

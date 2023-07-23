@@ -80,26 +80,20 @@ namespace claris{
         }
         void errMsg(const std::string& msg) const{
             std::cout<<msg<<std::endl;
-            abort();
+            exit(-1);
         }
     private:
         MATRIX data;
         size_t size_out;
         size_t size_in;
 
-    friend std::ostream& operator<<(std::ostream& os,const matrix& ma);
-
+    friend std::ostream& operator<<(std::ostream& os,const claris::matrix& ma);
     };
 
-    std::ostream& operator<<(std::ostream& os,const matrix& ma);
-    matrix operator*(double coef, const matrix&);
-
+    std::ostream& operator<<(std::ostream& os,const claris::matrix& ma);
+    claris::matrix operator*(double coef, const claris::matrix&);
 }
 
-//This is a unsolved problem that put this function to globle scope
-//I just make it in this way----put it inside claris, and use using.
-using claris::operator<<;
-using claris::operator*;
 
 #endif
 
