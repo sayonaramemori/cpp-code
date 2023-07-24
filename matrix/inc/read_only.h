@@ -54,37 +54,37 @@ namespace claris{
     class read_only{
     public:
         read_only()=delete;
-        virtual ~read_only(){
-            for(auto v:comment_marks){
-                delete v;
-            }
-        }
         read_only(const std::string& file_name,const std::string& comment_mark="");
         bool reset(const std::string& file_name,const std::string& comment_mark="");
         bool add_comment_mark(const std::string& pre, const std::string& lat="");
         void rm_comment_mark(const std::string& pre, const std::string& lat="");
+        void rm_comment_marks(){
+            while(!comment_marks.empty()){
+                delete comment_marks.back();
+                comment_marks.pop_back();
+            }
+        }
         void show_comment_marks();
         bool get_state(){return this->state;}
         std::string get_file_name(){return this->file_name;}
+        virtual ~read_only(){this->rm_comment_marks();}
     protected:
         void set_state(bool val){this->state = val;}
         void set_file_name(const std::string& name){this->file_name = name;}
+        virtual void trim(){}
         std::vector<comment*> comment_marks;
         std::vector<std::string> single_lines;
-        virtual int check_comment(const std::string& line,const std::string& mark="")=0;
-        virtual void trim(){}
 
     private:
         std::string file_name;
         bool state=false;
-        bool open_file();
+        bool open_file(const std::string &);
         friend std::ostream& operator<<(std::ostream& os,const read_only& ro);
     };
 
     std::ostream& operator<<(std::ostream& os,const read_only& ro);
 
 }
-using claris::operator<<;
 
 
 #endif
