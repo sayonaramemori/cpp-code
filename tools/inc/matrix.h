@@ -51,7 +51,7 @@ namespace claris{
             temp.toEchelon();
             return temp;
         }
-        std::vector<std::vector<double>> getInhomogeneousSolution() const;
+        std::vector<std::vector<double>> getRoot() const;
         void transform();
         void toEchelon();
         int rank() const;

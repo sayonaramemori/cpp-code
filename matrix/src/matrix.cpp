@@ -81,7 +81,7 @@ namespace claris{
         return this->getSlimEchelon().size();
     }
 
-    std::vector<std::vector<double>> matrix::getRoot() const{
+    std::vector<std::vector<double>> matrix::getInhomogeneousSolution() const{
         auto temp = this->getSlimEchelon();
         if(temp.data.back().back()!=0){
             auto vec = temp.data.back();

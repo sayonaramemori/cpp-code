@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.15)
+project(READONLY)
+set(CMAKE_CXX_STANDARD 11)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+file(GLOB SRC ${PROJECT_SOURCE_DIR}/src/*.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/inc)
+add_library(read STATIC ${SRC})
