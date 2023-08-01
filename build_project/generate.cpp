@@ -6,6 +6,6 @@ int main(){
     std::ofstream ofs("CMakeLists.txt");
     ofs<<content;
     ofs.close();
-    system("mkdir src inc -p");
+    system("mkdir src inc");
     return 0;
 }

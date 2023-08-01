@@ -43,6 +43,8 @@ namespace claris{
         read_only()=delete;
         read_only(const std::string& file_name,const std::string& comment_mark="");
         bool reset(const std::string& file_name,const std::string& comment_mark="");
+        virtual void trim();
+        const std::vector<std::string>& getlines(){return this->single_lines;}
         bool add_comment_mark(const std::string& pre, const std::string& lat="");
         void rm_comment_mark(const std::string& pre);
         void rm_comment_marks(){
@@ -55,8 +57,6 @@ namespace claris{
         bool get_state(){return this->state;}
         std::string get_file_name(){return this->file_name;}
         virtual ~read_only(){this->rm_comment_marks();}
-        virtual void trim();
-        const std::vector<std::string>& getlines(){return this->single_lines;}
     protected:
         void set_state(bool val){this->state = val;}
         void set_file_name(const std::string& name){this->file_name = name;}
@@ -76,8 +76,7 @@ namespace claris{
 
 #endif
 
-/*pure virtual base class*
- *
+/*
  * constructor:
  *          read_only(const string& file_name);
  *          read_only(const string& file_name, const string& single_comment_mark);
@@ -85,8 +84,8 @@ namespace claris{
  *          add_comment_mark(const string&);
  *          add_comment_mark(const string&,const string&);     //for couple comment mark
  *          rm_comment_mark(const string&);
- *          rm_comment_mark(const string&,const string&);
- *          reset ~ constructor                                //reset to a new file, but comment marks are kept.
+ *          rm_comment_marks();
+ *
  *
  */
 

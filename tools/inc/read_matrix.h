@@ -6,13 +6,8 @@ namespace claris{
     class read_matrix : public read_only
     {
         public:
-            read_matrix(const std::string &file,const std::string &cm=""):read_only(file,cm)
-            {
-                getVec();
-            }
-            matrix<T> getMatrix(){
-                return matrix<T>(temp);
-            }
+            read_matrix(const std::string &file,const std::string &cm=""):read_only(file,cm){getVec();}
+            matrix<T> getMatrix(){return matrix<T>(temp);}
         private:
             std::vector<std::vector<T>> temp;
             void getVec(){
