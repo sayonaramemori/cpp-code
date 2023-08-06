@@ -41,9 +41,17 @@ namespace claris{
     class read_only{
     public:
         read_only()=delete;
+        read_only(const read_only&)=delete;
         read_only(const std::string& file_name,const std::string& comment_mark="");
         bool reset(const std::string& file_name,const std::string& comment_mark="");
         virtual void trim();
+        std::vector<std::string> get_trim_lines(){
+            auto temp = single_lines;
+            trim();
+            auto res = this->single_lines;
+            this->single_lines = temp;
+            return res;
+        }
         const std::vector<std::string>& getlines(){return this->single_lines;}
         bool add_comment_mark(const std::string& pre, const std::string& lat="");
         void rm_comment_mark(const std::string& pre);
@@ -85,7 +93,6 @@ namespace claris{
  *          add_comment_mark(const string&,const string&);     //for couple comment mark
  *          rm_comment_mark(const string&);
  *          rm_comment_marks();
- *
  *
  */
 
